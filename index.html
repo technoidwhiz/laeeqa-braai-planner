@@ -418,37 +418,81 @@ function renderSource(tab, source, title, person){
   document.getElementById(tab).innerHTML = html;
 }
 
+
+
+function getCountdown(){
+  const now = new Date();
+  let year = now.getFullYear();
+  let eventDate = new Date(year, 6, 4, 16, 0, 0); // 4 July, 4pm
+  if(eventDate < now) eventDate = new Date(year + 1, 6, 4, 16, 0, 0);
+
+  const diff = eventDate - now;
+  const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+  const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
+  return {days, hours};
+}
+
 function renderOverview(){
-  const s = stats();
-  const pct = s.total ? Math.round((s.done/s.total)*100) : 0;
-  const pendingShopping = state.items.filter(x=>x.shopping&&!x.done).length;
-  const priority = state.items.filter(x=>!x.done).slice(0,6);
-  const people = group(state.items,"assigned");
-  let team = "";
-  Object.keys(people).sort().forEach(person=>{
-    const ps = stats(people[person]);
-    team += `<div class="person-card">
-      <div class="name">${esc(person)}</div>
-      <div class="count">${ps.done}/${ps.total}</div>
-      <div class="subtle">complete</div>
-    </div>`;
-  });
+  const pending = state.items.filter(x=>!x.done);
+  const shoppingLeft = state.items.filter(x=>x.shopping&&!x.done);
+  const setupLeft = state.items.filter(x=>!x.shopping&&!x.done);
+  const ameerLeft = state.items.filter(x=>x.assigned==="Ameer"&&!x.done).length;
+  const aaftabLeft = state.items.filter(x=>x.assigned==="Aaftab"&&!x.done).length;
+  const countdown = getCountdown();
+
   document.getElementById("overview").innerHTML = `
     <div class="hero">
       <div class="panel">
-        <h2>Event readiness</h2>
-        <div class="large">${pct}%</div>
-        <div class="progress"><div class="bar" style="width:${pct}%"></div></div>
-        <div class="subtle">${s.done} completed · ${s.pending} remaining · ${pendingShopping} shopping left</div>
+        <h2>Countdown</h2>
+        <div class="large">${countdown.days} days</div>
+        <div class="subtle">${countdown.hours} hours remaining until 4 July at around 4pm</div>
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn dark" onclick="go('shopping')">Open shopping list</button>
+          <button class="btn" onclick="go('timeline')">View timeline</button>
+        </div>
       </div>
+
       <div class="panel">
-        <h2>Next outstanding</h2>
+        <h2>Still open</h2>
         <ul class="priority-list">
-          ${priority.length ? priority.map(x=>`<li>${esc(x.name)} <span class="subtle">· ${esc(x.assigned)}</span></li>`).join("") : "<li>Everything is complete.</li>"}
+          <li><b>${pending.length}</b> total items remaining</li>
+          <li><b>${shoppingLeft.length}</b> shopping items</li>
+          <li><b>${setupLeft.length}</b> setup items</li>
+          <li><b>${ameerLeft}</b> items for Ameer</li>
+          <li><b>${aaftabLeft}</b> items for Aaftab</li>
         </ul>
       </div>
     </div>
-    <div class="grid">${team}</div>`;
+
+    <div class="grid">
+      <div class="person-card">
+        <div class="name">Quick Actions</div>
+        <div style="margin-top:12px;display:grid;gap:8px">
+          <button class="btn" onclick="go('shopping')">Shopping mode</button>
+          <button class="btn" onclick="go('additional')">Add new item</button>
+          <button class="btn" onclick="go('notes')">Open notes</button>
+          <button class="btn" onclick="go('share')">Share list</button>
+        </div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">People</div>
+        <div style="margin-top:12px">
+          <div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Ameer</b> <span class="subtle">· ${ameerLeft} open</span></div>
+          <div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Aaftab</b> <span class="subtle">· ${aaftabLeft} open</span></div>
+          <div style="padding:8px 0"><b>Additional</b> <span class="subtle">· ${state.items.filter(x=>x.source==="Additional Items"&&!x.done).length} open</span></div>
+        </div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Next Step</div>
+        <div style="margin-top:12px;line-height:1.5">
+          <b>Use Shopping Mode first.</b>
+          <div class="subtle" style="margin-top:8px">It only shows the pending shopping items, so the list is easier to use while buying.</div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderShopping(){
