@@ -5,37 +5,140 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Laeeqa's Birthday Braai Planner</title>
 <style>
-:root{--paper:#f4f0e8;--card:#fffdf8;--ink:#171717;--muted:#66625b;--line:#d8d0c3;--soft:#ede6da;--accent:#7b3f20;--accent2:#3f5f3b;--danger:#9a2b2b;--online:#2f7d32;--offline:#9a2b2b}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}.shell{max-width:1120px;margin:0 auto}
+:root{
+  --paper:#f4f0e8;--card:#fffdf8;--ink:#171717;--muted:#66625b;
+  --line:#d8d0c3;--accent:#7b3f20;--green:#2f7d32;--red:#9a2b2b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.shell{max-width:1120px;margin:0 auto}
 header{padding:28px 18px 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line)}
-.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}h1{margin:0;font-size:36px;line-height:1;letter-spacing:-.05em}
-.meta{color:var(--muted);margin-top:10px;font-size:14px}.status{margin-top:10px;font-size:13px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--offline);margin-right:6px}.dot.online{background:var(--online)}
-.header-actions{display:flex;gap:8px;flex-wrap:wrap}button{font:inherit}.btn{border:1px solid var(--ink);background:transparent;color:var(--ink);padding:10px 13px;cursor:pointer;font-weight:700;border-radius:2px}.btn.dark{background:var(--ink);color:white}
-.nav{display:flex;overflow:auto;background:#fbf8f1;border-bottom:1px solid var(--line)}.nav button{border:0;border-right:1px solid var(--line);background:transparent;padding:15px 16px;cursor:pointer;white-space:nowrap;color:var(--ink)}.nav button.active{background:var(--ink);color:white}
-.page{display:none;padding:18px}.page.active{display:block}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.panel{background:var(--card);border:1px solid var(--line);padding:18px;border-radius:2px}.panel h2{margin:0 0 12px;font-size:21px;letter-spacing:-.02em}.large{font-size:48px;font-weight:800;letter-spacing:-.06em;margin:8px 0}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.person-card{background:var(--card);border:1px solid var(--line);padding:16px}.person-card .name{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800}.subtle{color:var(--muted);font-size:13px}
-.section{background:var(--card);border:1px solid var(--line);margin-bottom:14px}.section-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#fbf8f1}.section-head h2{margin:0;font-size:18px}.section-head span{font-size:13px;color:var(--muted)}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+h1{margin:0;font-size:36px;line-height:1;letter-spacing:-.05em}
+.meta{color:var(--muted);margin-top:10px;font-size:14px}
+.status{margin-top:10px;font-size:13px;color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px}
+.dot.online{background:var(--green)}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit}
+.btn{border:1px solid var(--ink);background:transparent;color:var(--ink);padding:10px 13px;cursor:pointer;font-weight:700;border-radius:2px}
+.btn.dark{background:var(--ink);color:white}
+.nav{display:flex;overflow:auto;background:#fbf8f1;border-bottom:1px solid var(--line)}
+.nav button{border:0;border-right:1px solid var(--line);background:transparent;padding:15px 16px;cursor:pointer;white-space:nowrap;color:var(--ink)}
+.nav button.active{background:var(--ink);color:white}
+.page{display:none;padding:18px}.page.active{display:block}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.panel,.section,.person-card,.share-card{background:var(--card);border:1px solid var(--line)}
+.panel{padding:18px}.panel h2,.section-head h2,.share-card h2{margin:0;font-size:18px}
+.large{font-size:48px;font-weight:800;letter-spacing:-.06em;margin:8px 0}
+.subtle{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.person-card{padding:16px}
+.person-card .name{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.section{margin-bottom:14px}
+.section-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#fbf8f1}
+.section-head span{font-size:13px;color:var(--muted)}
 .addbar{display:grid;grid-template-columns:1.4fr 1fr 1fr 130px 80px;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line)}
 input,select,textarea{width:100%;border:1px solid var(--line);background:white;color:var(--ink);padding:11px;border-radius:2px;font-size:14px}
-.item{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #eee7dc}.item:last-child{border-bottom:0}.item input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent2)}.item.done .item-name{text-decoration:line-through;color:var(--muted)}.item-name{font-size:15px}.item-meta{color:var(--muted);font-size:12px;margin-top:3px}.remove{border:0;background:transparent;color:var(--danger);cursor:pointer;font-size:18px}
-.priority-list{margin:0;padding:0;list-style:none}.priority-list li{padding:10px 0;border-bottom:1px solid #eee7dc}.priority-list li:last-child{border-bottom:0}.timeline-block{padding:16px;border-bottom:1px solid #eee7dc}.timeline-block:last-child{border-bottom:0}.timeline-block h3{margin:0 0 10px;color:var(--accent);font-size:13px;letter-spacing:.12em;text-transform:uppercase}.timeline-block ul{margin:0;padding-left:18px}
-.share-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.share-card{background:var(--card);border:1px solid var(--line);padding:16px}.share-card h2{margin:0 0 10px;font-size:18px}.preview{white-space:pre-wrap;background:white;border:1px solid var(--line);padding:13px;min-height:180px;max-height:290px;overflow:auto;font-size:14px;line-height:1.45;margin:12px 0}.empty{padding:18px 16px;color:var(--muted)}.loading{padding:22px 18px;color:var(--muted)}
-@media(max-width:850px){header{display:block;padding:24px 14px 20px}h1{font-size:31px}.header-actions{margin-top:16px}.hero,.grid,.share-grid{grid-template-columns:1fr}.page{padding:14px}.addbar{grid-template-columns:1fr}.nav button{padding:14px 13px}.large{font-size:42px}}
+.item{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #eee7dc}
+.item:last-child{border-bottom:0}
+.item input[type=checkbox]{width:20px;height:20px;accent-color:var(--green)}
+.item.done .item-name{text-decoration:line-through;color:var(--muted)}
+.item-name{font-size:15px}.item-meta{color:var(--muted);font-size:12px;margin-top:3px}
+.remove{border:0;background:transparent;color:var(--red);cursor:pointer;font-size:18px}
+.list{margin:0;padding:0;list-style:none}.list li{padding:10px 0;border-bottom:1px solid #eee7dc}.list li:last-child{border-bottom:0}
+.timeline-block{padding:16px;border-bottom:1px solid #eee7dc}.timeline-block:last-child{border-bottom:0}
+.timeline-block h3{margin:0 0 10px;color:var(--accent);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.timeline-block ul{margin:0;padding-left:18px}
+.share-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.share-card{padding:16px}
+.preview{white-space:pre-wrap;background:white;border:1px solid var(--line);padding:13px;min-height:180px;max-height:290px;overflow:auto;font-size:14px;line-height:1.45;margin:12px 0}
+.empty,.loading{padding:18px 16px;color:var(--muted)}
+@media(max-width:850px){
+  header{display:block;padding:24px 14px 20px}h1{font-size:31px}.header-actions{margin-top:16px}
+  .hero,.grid,.share-grid{grid-template-columns:1fr}.page{padding:14px}.addbar{grid-template-columns:1fr}.nav button{padding:14px 13px}.large{font-size:42px}
+}
 </style>
 </head>
 <body>
 <div class="shell">
-<header><div><div class="kicker">Event Planner</div><h1>Laeeqa's Birthday Braai</h1><div class="meta">4 July · 15 guests · live shared checklist</div><div class="status"><span class="dot" id="syncDot"></span><span id="syncText">Connecting to live sync...</span></div></div><div class="header-actions"><button class="btn" onclick="go('shopping')">Shopping Mode</button><button class="btn dark" onclick="go('share')">Share</button></div></header>
-<nav class="nav"><button class="active" data-tab="overview">Overview</button><button data-tab="ameer">Ameer</button><button data-tab="aaftab">Aaftab</button><button data-tab="additional">Additional</button><button data-tab="shopping">Shopping</button><button data-tab="assignments">Assignments</button><button data-tab="timeline">Timeline</button><button data-tab="notes">Notes</button><button data-tab="share">Share</button></nav>
-<main><section class="page active" id="overview"><div class="loading">Loading live checklist...</div></section><section class="page" id="ameer"></section><section class="page" id="aaftab"></section><section class="page" id="additional"></section><section class="page" id="shopping"></section><section class="page" id="assignments"></section><section class="page" id="timeline"></section><section class="page" id="notes"></section><section class="page" id="share"></section></main>
+<header>
+  <div>
+    <div class="kicker">Event Planner</div>
+    <h1>Laeeqa's Birthday Braai</h1>
+    <div class="meta">4 July · 15 guests · live shared checklist</div>
+    <div class="status"><span class="dot" id="syncDot"></span><span id="syncText">Connecting to live sync...</span></div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="go('shopping')">Shopping Mode</button>
+    <button class="btn dark" onclick="go('share')">Share</button>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="active" data-tab="overview">Overview</button>
+  <button data-tab="ameer">Ameer</button>
+  <button data-tab="aaftab">Aaftab</button>
+  <button data-tab="additional">Additional</button>
+  <button data-tab="shopping">Shopping</button>
+  <button data-tab="assignments">Assignments</button>
+  <button data-tab="timeline">Timeline</button>
+  <button data-tab="notes">Notes</button>
+  <button data-tab="share">Share</button>
+</nav>
+
+<main>
+  <section class="page active" id="overview"><div class="loading">Loading live checklist...</div></section>
+  <section class="page" id="ameer"></section>
+  <section class="page" id="aaftab"></section>
+  <section class="page" id="additional"></section>
+  <section class="page" id="shopping"></section>
+  <section class="page" id="assignments"></section>
+  <section class="page" id="timeline"></section>
+  <section class="page" id="notes"></section>
+  <section class="page" id="share"></section>
+</main>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getFirestore, doc, onSnapshot, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyANTmeEIMQvdb8rMNSNGHZHxsX2ZaXNOMY",authDomain:"braai-planner.firebaseapp.com",projectId:"braai-planner",storageBucket:"braai-planner.firebasestorage.app",messagingSenderId:"947547549481",appId:"1:947547549481:web:64e4f6b8420097d27c1138",measurementId:"G-S4F33LY2KP"};
-const app=initializeApp(firebaseConfig);const db=getFirestore(app);const eventRef=doc(db,"events","laeeqa-birthday-braai");
-const base=[["Chops","Ameer","Meat","Ameer List",true],["Wings","Ameer","Meat","Ameer List",true],["Sausage","Ameer","Meat","Ameer List",true],["Marinade","Ameer","Meat","Ameer List",true],["Lemon juice","Ameer","Meat","Ameer List",true],["Garlic rolls","Ameer","Bread","Ameer List",true],["Normal rolls","Ameer","Bread","Ameer List",true],["Sauces","Ameer","Sauces & Seasoning","Ameer List",true],["Pepper","Ameer","Sauces & Seasoning","Ameer List",true],["Salad stuff","Ameer","Salads & Sides","Ameer List",true],["Onions","Ameer","Salads & Sides","Ameer List",true],["Tomatoes","Ameer","Salads & Sides","Ameer List",true],["Potatoes","Ameer","Salads & Sides","Ameer List",true],["Lettuce","Ameer","Salads & Sides","Ameer List",true],["Baked beans","Ameer","Salads & Sides","Ameer List",true],["Coal","Ameer","Fire","Ameer List",true],["Firelighters","Ameer","Fire","Ameer List",true],["Foil","Ameer","Serving & Storage","Ameer List",true],["Takeaway containers","Ameer","Serving & Storage","Ameer List",true],["Chafing dish","Ameer","Serving & Storage","Ameer List",true],["Burner","Ameer","Serving & Storage","Ameer List",true],["Paper plates","Ameer","Eating Items","Ameer List",true],["Cups","Ameer","Eating Items","Ameer List",true],["Plastic spoons","Ameer","Eating Items","Ameer List",true],["Plastic forks","Ameer","Eating Items","Ameer List",true],["Paper towels","Ameer","Eating Items","Ameer List",true],["Serviettes","Ameer","Eating Items","Ameer List",true],["Toothpicks","Ameer","Eating Items","Ameer List",true],["Cold drinks","Ameer","Drinks","Ameer List",true],["Juice","Ameer","Drinks","Ameer List",true],["Water","Ameer","Drinks","Ameer List",true],["Cooler box","Ameer","Drinks","Ameer List",true],["Ice","Ameer","Drinks","Ameer List",true],["Tea","Ameer","Hot Drinks","Ameer List",true],["Coffee","Ameer","Hot Drinks","Ameer List",true],["Tablecloth","Ameer","Setup","Ameer List",true],["Tongs","Ameer","Braai Equipment","Ameer List",true],["Braai kit","Ameer","Braai Equipment","Ameer List",true],["Laeeqa's cake","Ameer","Birthday","Ameer List",true],["1 × Gazebo gutter","Aaftab","Gazebos & Shelter","Aaftab List",false],["4 × Side walls","Aaftab","Gazebos & Shelter","Aaftab List",false],["2 × Gazebos for eating","Aaftab","Gazebos & Shelter","Aaftab List",false],["1 × Gazebo for fire","Aaftab","Gazebos & Shelter","Aaftab List",false],["12 × Gazebo weight bags","Aaftab","Gazebos & Shelter","Aaftab List",false],["24 × Chairs","Aaftab","Seating & Tables","Aaftab List",false],["4 × Trestle tables","Aaftab","Seating & Tables","Aaftab List",false],["3 × Black tablecloths","Aaftab","Seating & Tables","Aaftab List",false],["3 × Lights","Aaftab","Lighting & Power","Aaftab List",false],["Extension cords","Aaftab","Lighting & Power","Aaftab List",false],["Cable ties","Aaftab","Setup Tools","Aaftab List",false],["Clipper","Aaftab","Setup Tools","Aaftab List",false],["1 × Braai stand","Aaftab","Braai Equipment","Aaftab List",false],["Braai grid cleaner","Aaftab","Braai Equipment","Aaftab List",false],["Gas lighter gun thingy","Aaftab","Braai Equipment","Aaftab List",false],["2 × Chafing dishes","Aaftab","Food Serving","Aaftab List",false],["2 × Cooler boxes","Aaftab","Cooling & Drinks","Aaftab List",false]];
-const baseTimeline=[
+
+const firebaseConfig = {
+  apiKey: "AIzaSyANTmeEIMQvdb8rMNSNGHZHxsX2ZaXNOMY",
+  authDomain: "braai-planner.firebaseapp.com",
+  projectId: "braai-planner",
+  storageBucket: "braai-planner.firebasestorage.app",
+  messagingSenderId: "947547549481",
+  appId: "1:947547549481:web:64e4f6b8420097d27c1138",
+  measurementId: "G-S4F33LY2KP"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const eventRef = doc(db, "events", "laeeqa-birthday-braai");
+
+const baseItems = [
+["Chops","Ameer","Meat","Ameer List",true],["Wings","Ameer","Meat","Ameer List",true],["Sausage","Ameer","Meat","Ameer List",true],["Marinade","Ameer","Meat","Ameer List",true],["Lemon juice","Ameer","Meat","Ameer List",true],
+["Garlic rolls","Ameer","Bread","Ameer List",true],["Normal rolls","Ameer","Bread","Ameer List",true],
+["Sauces","Ameer","Sauces & Seasoning","Ameer List",true],["Pepper","Ameer","Sauces & Seasoning","Ameer List",true],
+["Salad stuff","Ameer","Salads & Sides","Ameer List",true],["Onions","Ameer","Salads & Sides","Ameer List",true],["Tomatoes","Ameer","Salads & Sides","Ameer List",true],["Potatoes","Ameer","Salads & Sides","Ameer List",true],["Lettuce","Ameer","Salads & Sides","Ameer List",true],["Baked beans","Ameer","Salads & Sides","Ameer List",true],
+["Coal","Ameer","Fire","Ameer List",true],["Firelighters","Ameer","Fire","Ameer List",true],
+["Foil","Ameer","Serving & Storage","Ameer List",true],["Takeaway containers","Ameer","Serving & Storage","Ameer List",true],["Chafing dish","Ameer","Serving & Storage","Ameer List",true],["Burner","Ameer","Serving & Storage","Ameer List",true],
+["Paper plates","Ameer","Eating Items","Ameer List",true],["Cups","Ameer","Eating Items","Ameer List",true],["Plastic spoons","Ameer","Eating Items","Ameer List",true],["Plastic forks","Ameer","Eating Items","Ameer List",true],["Paper towels","Ameer","Eating Items","Ameer List",true],["Serviettes","Ameer","Eating Items","Ameer List",true],["Toothpicks","Ameer","Eating Items","Ameer List",true],
+["Cold drinks","Ameer","Drinks","Ameer List",true],["Juice","Ameer","Drinks","Ameer List",true],["Water","Ameer","Drinks","Ameer List",true],["Cooler box","Ameer","Drinks","Ameer List",true],["Ice","Ameer","Drinks","Ameer List",true],
+["Tea","Ameer","Hot Drinks","Ameer List",true],["Coffee","Ameer","Hot Drinks","Ameer List",true],
+["Tablecloth","Ameer","Setup","Ameer List",true],["Tongs","Ameer","Braai Equipment","Ameer List",true],["Braai kit","Ameer","Braai Equipment","Ameer List",true],
+["Laeeqa's cake","Ameer","Birthday","Ameer List",true],
+["1 × Gazebo gutter","Aaftab","Gazebos & Shelter","Aaftab List",false],["4 × Side walls","Aaftab","Gazebos & Shelter","Aaftab List",false],["2 × Gazebos for eating","Aaftab","Gazebos & Shelter","Aaftab List",false],["1 × Gazebo for fire","Aaftab","Gazebos & Shelter","Aaftab List",false],["12 × Gazebo weight bags","Aaftab","Gazebos & Shelter","Aaftab List",false],
+["24 × Chairs","Aaftab","Seating & Tables","Aaftab List",false],["4 × Trestle tables","Aaftab","Seating & Tables","Aaftab List",false],["3 × Black tablecloths","Aaftab","Seating & Tables","Aaftab List",false],
+["3 × Lights","Aaftab","Lighting & Power","Aaftab List",false],["Extension cords","Aaftab","Lighting & Power","Aaftab List",false],
+["Cable ties","Aaftab","Setup Tools","Aaftab List",false],["Clipper","Aaftab","Setup Tools","Aaftab List",false],
+["1 × Braai stand","Aaftab","Braai Equipment","Aaftab List",false],["Braai grid cleaner","Aaftab","Braai Equipment","Aaftab List",false],["Gas lighter gun thingy","Aaftab","Braai Equipment","Aaftab List",false],
+["2 × Chafing dishes","Aaftab","Food Serving","Aaftab List",false],["2 × Cooler boxes","Aaftab","Cooling & Drinks","Aaftab List",false]
+];
+
+const defaultTimeline = [
 {phase:"Week Before",tasks:["Finalise guest count","Confirm who is bringing what","Confirm Aaftab's setup items are available"]},
 {phase:"2–3 Days Before",tasks:["Buy non-perishables","Buy drinks","Check cooler boxes","Check lights and extension leads"]},
 {phase:"Day Before",tasks:["Buy fresh vegetables","Prepare salads if needed","Marinate meat","Put drinks in fridge","Confirm cake collection"]},
@@ -45,39 +148,251 @@ const baseTimeline=[
 {phase:"During",tasks:["Keep drinks stocked","Move cooked meat to serving area","Bring out cake"]},
 {phase:"After",tasks:["Pack leftovers","Pack equipment","Dispose of rubbish","Return borrowed items"]}
 ];
+
+let state = null;
+let saveTimer = null;
+
 function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
-function newState(){return{items:base.map(x=>({id:makeId(),name:x[0],assigned:x[1],category:x[2],source:x[3],shopping:x[4],done:false})),timeline:baseTimeline,notes:"",updatedAt:Date.now()}}
-let state=null;
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
-function group(arr,key){return arr.reduce((a,x)=>{(a[x[key]||"Other"]??=[]).push(x);return a},{})}
-function stats(arr=state.items){return{total:arr.length,done:arr.filter(x=>x.done).length,pending:arr.filter(x=>!x.done).length}}
-function setSync(text,online){document.getElementById("syncText").textContent=text;document.getElementById("syncDot").classList.toggle("online",!!online)}
-async function saveLive(){if(!state)return;try{await setDoc(eventRef,{...state,updatedAt:Date.now(),serverUpdatedAt:serverTimestamp()});setSync("Live sync active",true)}catch(e){console.error(e);setSync("Sync error - check Firebase rules",false)}}
-onSnapshot(eventRef,async snap=>{if(!snap.exists()){state=newState();await setDoc(eventRef,{...state,serverUpdatedAt:serverTimestamp()});setSync("Live sync active",true);renderAll();return}state=snap.data();if(!state.items)state.items=[];if(!state.timeline)state.timeline=baseTimeline;if(Array.isArray(state.timeline)&&Array.isArray(state.timeline[0])){state.timeline=state.timeline.map(x=>({phase:x[0],tasks:x[1]}));}if(typeof state.notes!=="string")state.notes="";setSync("Live sync active",true);renderAll()},error=>{console.error(error);setSync("Could not connect to Firebase",false)});
-function itemRow(x){return `<div class="item ${x.done?"done":""}"><input type="checkbox" ${x.done?"checked":""} onchange="toggleItem('${x.id}')"><div><div class="item-name">${esc(x.name)}</div><div class="item-meta">${esc(x.category)} · ${esc(x.assigned)} · ${x.shopping?"Shopping":"Setup"}</div></div><button class="remove" onclick="removeItem('${x.id}')" title="Delete">×</button></div>`}
-function addBar(source,person){return `<div class="addbar"><input id="${source}-name" placeholder="Add item"><input id="${source}-cat" placeholder="Category"><input id="${source}-person" placeholder="Assigned to" value="${person}"><select id="${source}-type"><option value="true">Shopping</option><option value="false">Setup</option></select><button class="btn dark" onclick="addItem('${source}')">Add</button></div>`}
-function renderSource(tab,source,title,person){const arr=state.items.filter(x=>x.source===source),s=stats(arr),grouped=group(arr,"category");let html=`<div class="section"><div class="section-head"><div><h2>${title}</h2><span>${s.done} of ${s.total} complete</span></div></div>${addBar(source,person)}</div>`;Object.keys(grouped).forEach(cat=>{html+=`<div class="section"><div class="section-head"><div><h2>${esc(cat)}</h2><span>${grouped[cat].length} items</span></div></div>${grouped[cat].map(itemRow).join("")}</div>`});document.getElementById(tab).innerHTML=html}
-function getCountdown(){const now=new Date();let y=now.getFullYear();let d=new Date(y,6,4,16,0,0);if(d<now)d=new Date(y+1,6,4,16,0,0);const diff=d-now;return{days:Math.max(0,Math.floor(diff/(1000*60*60*24))),hours:Math.max(0,Math.floor((diff/(1000*60*60))%24))}}
-function renderOverview(){const pending=state.items.filter(x=>!x.done),shoppingLeft=state.items.filter(x=>x.shopping&&!x.done),setupLeft=state.items.filter(x=>!x.shopping&&!x.done),ameerLeft=state.items.filter(x=>x.assigned==="Ameer"&&!x.done).length,aaftabLeft=state.items.filter(x=>x.assigned==="Aaftab"&&!x.done).length,c=getCountdown();document.getElementById("overview").innerHTML=`<div class="hero"><div class="panel"><h2>Countdown</h2><div class="large">${c.days} days</div><div class="subtle">${c.hours} hours remaining until 4 July at around 4pm</div><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn dark" onclick="go('shopping')">Open shopping list</button><button class="btn" onclick="go('timeline')">View timeline</button></div></div><div class="panel"><h2>Still open</h2><ul class="priority-list"><li><b>${pending.length}</b> total items remaining</li><li><b>${shoppingLeft.length}</b> shopping items</li><li><b>${setupLeft.length}</b> setup items</li><li><b>${ameerLeft}</b> items for Ameer</li><li><b>${aaftabLeft}</b> items for Aaftab</li></ul></div></div><div class="grid"><div class="person-card"><div class="name">Quick Actions</div><div style="margin-top:12px;display:grid;gap:8px"><button class="btn" onclick="go('shopping')">Shopping mode</button><button class="btn" onclick="go('additional')">Add new item</button><button class="btn" onclick="go('notes')">Open notes</button><button class="btn" onclick="go('share')">Share list</button></div></div><div class="person-card"><div class="name">People</div><div style="margin-top:12px"><div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Ameer</b> <span class="subtle">· ${ameerLeft} open</span></div><div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Aaftab</b> <span class="subtle">· ${aaftabLeft} open</span></div><div style="padding:8px 0"><b>Additional</b> <span class="subtle">· ${state.items.filter(x=>x.source==="Additional Items"&&!x.done).length} open</span></div></div></div><div class="person-card"><div class="name">Live Sync</div><div style="margin-top:12px;line-height:1.5"><b>Everyone sees the same list.</b><div class="subtle" style="margin-top:8px">Ticks, new items and notes update through Firebase.</div></div></div></div>`}
-function renderShopping(){const pending=state.items.filter(x=>x.shopping&&!x.done),completed=state.items.filter(x=>x.shopping&&x.done),grouped=group(pending,"category");let html=`<div class="section"><div class="section-head"><div><h2>Shopping Mode</h2><span>${pending.length} pending · ${completed.length} completed</span></div></div></div>`;if(!pending.length)html+=`<div class="section"><div class="empty">No pending shopping items.</div></div>`;Object.keys(grouped).forEach(cat=>{html+=`<div class="section"><div class="section-head"><div><h2>${esc(cat)}</h2><span>${grouped[cat].length} pending</span></div></div>${grouped[cat].map(itemRow).join("")}</div>`});html+=`<div class="section"><div class="section-head"><div><h2>Completed Shopping Items</h2><span>Untick here if checked by mistake</span></div></div>${completed.length?completed.map(itemRow).join(""):`<div class="empty">No shopping items completed yet.</div>`}</div>`;document.getElementById("shopping").innerHTML=html}
-function renderAssignments(){const grouped=group(state.items,"assigned");let html="";Object.keys(grouped).sort().forEach(person=>{const ps=stats(grouped[person]);html+=`<div class="section"><div class="section-head"><div><h2>${esc(person)}</h2><span>${ps.done} of ${ps.total} complete</span></div></div>${grouped[person].map(itemRow).join("")}</div>`});document.getElementById("assignments").innerHTML=html}
-function renderTimeline(){let html=`<div class="section"><div class="section-head"><div><h2>Timeline</h2><span>Running order for the event</span></div></div>`;state.timeline.forEach(tl=>{html+=`<div class="timeline-block"><h3>${esc(tl.phase)}</h3><ul>${tl.tasks.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`});html+=`</div>`;document.getElementById("timeline").innerHTML=html}
-function renderNotes(){document.getElementById("notes").innerHTML=`<div class="section"><div class="section-head"><div><h2>Notes</h2><span>Live shared notes for reminders and changes.</span></div></div><div style="padding:16px"><textarea id="notesBox" placeholder="Example: Confirm cake collection time..." style="min-height:260px;line-height:1.5" oninput="saveNotesLive()">${esc(state.notes||"")}</textarea></div></div>`}
-function lineItems(arr){return arr.map(x=>`${x.done?"✓":"☐"} ${x.name}${x.assigned?" - "+x.assigned:""}`).join("\n")}
-function exportAll(){let out="Laeeqa's Birthday Braai\n4 July · 15 Guests\n\n";["Ameer List","Aaftab List","Additional Items"].forEach(src=>{const arr=state.items.filter(x=>x.source===src);if(arr.length)out+=src+"\n"+lineItems(arr)+"\n\n"});if(state.notes&&state.notes.trim())out+="Notes\n"+state.notes.trim()+"\n\n";return out.trim()}
-function exportPending(){let out="Laeeqa's Birthday Braai - Pending Items\n\n";["Ameer List","Aaftab List","Additional Items"].forEach(src=>{const arr=state.items.filter(x=>x.source===src&&!x.done);if(arr.length)out+=src+"\n"+lineItems(arr)+"\n\n"});return out.trim()}
-function exportShopping(){const arr=state.items.filter(x=>x.shopping&&!x.done);return "Shopping List\n\n"+(arr.length?arr.map(x=>`☐ ${x.name}`).join("\n"):"Everything shopping-related is complete.")}
-function exportPerson(person){const arr=state.items.filter(x=>x.assigned.toLowerCase()===person.toLowerCase()&&!x.done);return person+"'s Outstanding Items\n\n"+(arr.length?arr.map(x=>`☐ ${x.name} (${x.source})`).join("\n"):"Nothing outstanding.")}
-function exportTimeline(){return "Laeeqa's Birthday Braai - Timeline\n\n"+state.timeline.map(([phase,tasks])=>phase+"\n"+tasks.map(t=>"☐ "+t).join("\n")).join("\n\n")}
-function shareCard(title,text,id){return `<div class="share-card"><h2>${title}</h2><div class="preview" id="${id}">${esc(text)}</div><button class="btn dark" onclick="copyFrom('${id}')">Copy</button></div>`}
-function renderShare(){document.getElementById("share").innerHTML=`<div class="share-grid">${shareCard("Pending only",exportPending(),"sharePending")}${shareCard("Shopping list",exportShopping(),"shareShopping")}${shareCard("Ameer only",exportPerson("Ameer"),"shareAmeer")}${shareCard("Aaftab only",exportPerson("Aaftab"),"shareAaftab")}${shareCard("Timeline",exportTimeline(),"shareTimeline")}${shareCard("Full checklist",exportAll(),"shareFull")}</div>`}
-function renderAll(){if(!state)return;renderOverview();renderSource("ameer","Ameer List","Ameer’s List","Ameer");renderSource("aaftab","Aaftab List","Aaftab’s List","Aaftab");renderSource("additional","Additional Items","Additional Items","");renderShopping();renderAssignments();renderTimeline();renderNotes();renderShare()}
-window.addItem=function(source){const name=document.getElementById(source+"-name").value.trim();if(!name)return;const category=document.getElementById(source+"-cat").value.trim()||"Other";const assigned=document.getElementById(source+"-person").value.trim()||"Unassigned";const shopping=document.getElementById(source+"-type").value==="true";state.items.push({id:makeId(),name,category,assigned,source,shopping,done:false});renderAll();saveLive()}
-window.toggleItem=function(id){const item=state.items.find(x=>x.id===id);if(item)item.done=!item.done;renderAll();saveLive()}
-window.removeItem=function(id){if(!confirm("Delete this item?"))return;state.items=state.items.filter(x=>x.id!==id);renderAll();saveLive()}
-window.saveNotesLive=function(){state.notes=document.getElementById("notesBox").value;saveLive()}
-window.copyFrom=function(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert("Copied. You can paste it into WhatsApp.")}
-window.go=function(tab){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===tab));window.scrollTo({top:0,behavior:"smooth"})}
+function freshState(){
+  return {
+    items: baseItems.map(x=>({id:makeId(),name:x[0],assigned:x[1],category:x[2],source:x[3],shopping:x[4],done:false})),
+    timeline: structuredClone(defaultTimeline),
+    notes:"",
+    updatedAt:Date.now()
+  };
+}
+function normaliseTimeline(timeline){
+  if(!Array.isArray(timeline)) return structuredClone(defaultTimeline);
+  return timeline.map(x=>{
+    if(Array.isArray(x)) return {phase:String(x[0]||"Phase"), tasks:Array.isArray(x[1])?x[1].map(String):[]};
+    return {phase:String(x.phase||"Phase"), tasks:Array.isArray(x.tasks)?x.tasks.map(String):[]};
+  });
+}
+function normaliseState(data){
+  const clean = data || freshState();
+  clean.items = Array.isArray(clean.items) ? clean.items : [];
+  clean.timeline = normaliseTimeline(clean.timeline);
+  clean.notes = typeof clean.notes === "string" ? clean.notes : "";
+  clean.updatedAt = clean.updatedAt || Date.now();
+  return clean;
+}
+function setSync(text,online){
+  document.getElementById("syncText").textContent=text;
+  document.getElementById("syncDot").classList.toggle("online",!!online);
+}
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function group(arr,key){
+  return arr.reduce((a,x)=>{const k=x[key]||"Other";(a[k]??=[]).push(x);return a;},{});
+}
+function stats(arr){return {total:arr.length,done:arr.filter(x=>x.done).length,pending:arr.filter(x=>!x.done).length}}
+
+async function saveLive(immediate=false){
+  if(!state) return;
+  clearTimeout(saveTimer);
+  const run = async ()=>{
+    try{
+      const payload = normaliseState({...state, updatedAt:Date.now()});
+      await setDoc(eventRef,{...payload,serverUpdatedAt:serverTimestamp()});
+      setSync("Live sync active",true);
+    }catch(e){
+      console.error(e);
+      setSync("Sync error - open console",false);
+    }
+  };
+  if(immediate) run();
+  else saveTimer = setTimeout(run,300);
+}
+
+onSnapshot(eventRef, async snap=>{
+  try{
+    if(!snap.exists()){
+      state=freshState();
+      await setDoc(eventRef,{...state,serverUpdatedAt:serverTimestamp()});
+    }else{
+      state=normaliseState(snap.data());
+    }
+    setSync("Live sync active",true);
+    renderAll();
+  }catch(e){
+    console.error(e);
+    setSync("Page error - open console",false);
+  }
+}, err=>{
+  console.error(err);
+  setSync("Could not connect to Firebase",false);
+});
+
+function itemRow(x){
+  return `<div class="item ${x.done?"done":""}">
+    <input type="checkbox" ${x.done?"checked":""} onchange="toggleItem('${x.id}')">
+    <div>
+      <div class="item-name">${esc(x.name)}</div>
+      <div class="item-meta">${esc(x.category)} · ${esc(x.assigned)} · ${x.shopping?"Shopping":"Setup"}</div>
+    </div>
+    <button class="remove" onclick="removeItem('${x.id}')">×</button>
+  </div>`;
+}
+function addBar(source,person){
+  return `<div class="addbar">
+    <input id="${source}-name" placeholder="Add item">
+    <input id="${source}-cat" placeholder="Category">
+    <input id="${source}-person" placeholder="Assigned to" value="${esc(person)}">
+    <select id="${source}-type"><option value="true">Shopping</option><option value="false">Setup</option></select>
+    <button class="btn dark" onclick="addItem('${source}')">Add</button>
+  </div>`;
+}
+function renderSource(tab,source,title,person){
+  const arr=state.items.filter(x=>x.source===source);
+  const s=stats(arr);
+  const grouped=group(arr,"category");
+  let html=`<div class="section"><div class="section-head"><div><h2>${title}</h2><span>${s.done} of ${s.total} complete</span></div></div>${addBar(source,person)}</div>`;
+  Object.keys(grouped).forEach(cat=>{
+    html+=`<div class="section"><div class="section-head"><div><h2>${esc(cat)}</h2><span>${grouped[cat].length} items</span></div></div>${grouped[cat].map(itemRow).join("")}</div>`;
+  });
+  document.getElementById(tab).innerHTML=html;
+}
+function getCountdown(){
+  const now=new Date();let y=now.getFullYear();let d=new Date(y,6,4,16,0,0);
+  if(d<now)d=new Date(y+1,6,4,16,0,0);
+  const diff=d-now;
+  return {days:Math.max(0,Math.floor(diff/(1000*60*60*24))),hours:Math.max(0,Math.floor((diff/(1000*60*60))%24))};
+}
+function renderOverview(){
+  const pending=state.items.filter(x=>!x.done);
+  const shoppingLeft=state.items.filter(x=>x.shopping&&!x.done);
+  const setupLeft=state.items.filter(x=>!x.shopping&&!x.done);
+  const ameerLeft=state.items.filter(x=>x.assigned==="Ameer"&&!x.done).length;
+  const aaftabLeft=state.items.filter(x=>x.assigned==="Aaftab"&&!x.done).length;
+  const c=getCountdown();
+  document.getElementById("overview").innerHTML=`
+  <div class="hero">
+    <div class="panel"><h2>Countdown</h2><div class="large">${c.days} days</div><div class="subtle">${c.hours} hours remaining until 4 July at around 4pm</div><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn dark" onclick="go('shopping')">Open shopping list</button><button class="btn" onclick="go('timeline')">View timeline</button></div></div>
+    <div class="panel"><h2>Still open</h2><ul class="list"><li><b>${pending.length}</b> total items remaining</li><li><b>${shoppingLeft.length}</b> shopping items</li><li><b>${setupLeft.length}</b> setup items</li><li><b>${ameerLeft}</b> items for Ameer</li><li><b>${aaftabLeft}</b> items for Aaftab</li></ul></div>
+  </div>
+  <div class="grid">
+    <div class="person-card"><div class="name">Quick Actions</div><div style="margin-top:12px;display:grid;gap:8px"><button class="btn" onclick="go('shopping')">Shopping mode</button><button class="btn" onclick="go('additional')">Add new item</button><button class="btn" onclick="go('notes')">Open notes</button><button class="btn" onclick="go('share')">Share list</button></div></div>
+    <div class="person-card"><div class="name">People</div><div style="margin-top:12px"><div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Ameer</b> <span class="subtle">· ${ameerLeft} open</span></div><div style="padding:8px 0;border-bottom:1px solid #eee7dc"><b>Aaftab</b> <span class="subtle">· ${aaftabLeft} open</span></div><div style="padding:8px 0"><b>Additional</b> <span class="subtle">· ${state.items.filter(x=>x.source==="Additional Items"&&!x.done).length} open</span></div></div></div>
+    <div class="person-card"><div class="name">Live Sync</div><div style="margin-top:12px;line-height:1.5"><b>Everyone sees the same list.</b><div class="subtle" style="margin-top:8px">Ticks, new items and notes update through Firebase.</div></div></div>
+  </div>`;
+}
+function renderShopping(){
+  const pending=state.items.filter(x=>x.shopping&&!x.done);
+  const completed=state.items.filter(x=>x.shopping&&x.done);
+  const grouped=group(pending,"category");
+  let html=`<div class="section"><div class="section-head"><div><h2>Shopping Mode</h2><span>${pending.length} pending · ${completed.length} completed</span></div></div></div>`;
+  if(!pending.length)html+=`<div class="section"><div class="empty">No pending shopping items.</div></div>`;
+  Object.keys(grouped).forEach(cat=>{
+    html+=`<div class="section"><div class="section-head"><div><h2>${esc(cat)}</h2><span>${grouped[cat].length} pending</span></div></div>${grouped[cat].map(itemRow).join("")}</div>`;
+  });
+  html+=`<div class="section"><div class="section-head"><div><h2>Completed Shopping Items</h2><span>Untick here if checked by mistake</span></div></div>${completed.length?completed.map(itemRow).join(""):`<div class="empty">No shopping items completed yet.</div>`}</div>`;
+  document.getElementById("shopping").innerHTML=html;
+}
+function renderAssignments(){
+  const grouped=group(state.items,"assigned");let html="";
+  Object.keys(grouped).sort().forEach(person=>{
+    const s=stats(grouped[person]);
+    html+=`<div class="section"><div class="section-head"><div><h2>${esc(person)}</h2><span>${s.done} of ${s.total} complete</span></div></div>${grouped[person].map(itemRow).join("")}</div>`;
+  });
+  document.getElementById("assignments").innerHTML=html;
+}
+function renderTimeline(){
+  let html=`<div class="section"><div class="section-head"><div><h2>Timeline</h2><span>Running order for the event</span></div></div>`;
+  state.timeline.forEach(tl=>{
+    html+=`<div class="timeline-block"><h3>${esc(tl.phase)}</h3><ul>${tl.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ul></div>`;
+  });
+  html+=`</div>`;
+  document.getElementById("timeline").innerHTML=html;
+}
+function renderNotes(){
+  document.getElementById("notes").innerHTML=`<div class="section"><div class="section-head"><div><h2>Notes</h2><span>Live shared notes for reminders and changes.</span></div></div><div style="padding:16px"><textarea id="notesBox" placeholder="Example: Confirm cake collection time..." style="min-height:260px;line-height:1.5" oninput="saveNotesLive()">${esc(state.notes)}</textarea></div></div>`;
+}
+function lineItems(arr){return arr.map(x=>`${x.done?"✓":"☐"} ${x.name}${x.assigned?" - "+x.assigned:""}`).join("\n");}
+function exportAll(){
+  let out="Laeeqa's Birthday Braai\n4 July · 15 Guests\n\n";
+  ["Ameer List","Aaftab List","Additional Items"].forEach(src=>{
+    const arr=state.items.filter(x=>x.source===src);
+    if(arr.length)out+=src+"\n"+lineItems(arr)+"\n\n";
+  });
+  if(state.notes.trim())out+="Notes\n"+state.notes.trim()+"\n\n";
+  return out.trim();
+}
+function exportPending(){
+  let out="Laeeqa's Birthday Braai - Pending Items\n\n";
+  ["Ameer List","Aaftab List","Additional Items"].forEach(src=>{
+    const arr=state.items.filter(x=>x.source===src&&!x.done);
+    if(arr.length)out+=src+"\n"+lineItems(arr)+"\n\n";
+  });
+  return out.trim();
+}
+function exportShopping(){
+  const arr=state.items.filter(x=>x.shopping&&!x.done);
+  return "Shopping List\n\n"+(arr.length?arr.map(x=>`☐ ${x.name}`).join("\n"):"Everything shopping-related is complete.");
+}
+function exportPerson(person){
+  const arr=state.items.filter(x=>x.assigned.toLowerCase()===person.toLowerCase()&&!x.done);
+  return person+"'s Outstanding Items\n\n"+(arr.length?arr.map(x=>`☐ ${x.name} (${x.source})`).join("\n"):"Nothing outstanding.");
+}
+function exportTimeline(){
+  return "Laeeqa's Birthday Braai - Timeline\n\n"+state.timeline.map(tl=>tl.phase+"\n"+tl.tasks.map(x=>"☐ "+x).join("\n")).join("\n\n");
+}
+function shareCard(title,text,id){
+  return `<div class="share-card"><h2>${title}</h2><div class="preview" id="${id}">${esc(text)}</div><button class="btn dark" onclick="copyFrom('${id}')">Copy</button></div>`;
+}
+function renderShare(){
+  document.getElementById("share").innerHTML=`<div class="share-grid">
+  ${shareCard("Pending only",exportPending(),"sharePending")}
+  ${shareCard("Shopping list",exportShopping(),"shareShopping")}
+  ${shareCard("Ameer only",exportPerson("Ameer"),"shareAmeer")}
+  ${shareCard("Aaftab only",exportPerson("Aaftab"),"shareAaftab")}
+  ${shareCard("Timeline",exportTimeline(),"shareTimeline")}
+  ${shareCard("Full checklist",exportAll(),"shareFull")}
+  </div>`;
+}
+function renderAll(){
+  if(!state)return;
+  renderOverview();
+  renderSource("ameer","Ameer List","Ameer’s List","Ameer");
+  renderSource("aaftab","Aaftab List","Aaftab’s List","Aaftab");
+  renderSource("additional","Additional Items","Additional Items","");
+  renderShopping();
+  renderAssignments();
+  renderTimeline();
+  renderNotes();
+  renderShare();
+}
+
+window.addItem=function(source){
+  const name=document.getElementById(source+"-name").value.trim();if(!name)return;
+  const category=document.getElementById(source+"-cat").value.trim()||"Other";
+  const assigned=document.getElementById(source+"-person").value.trim()||"Unassigned";
+  const shopping=document.getElementById(source+"-type").value==="true";
+  state.items.push({id:makeId(),name,category,assigned,source,shopping,done:false});
+  renderAll();saveLive(true);
+}
+window.toggleItem=function(id){
+  const item=state.items.find(x=>x.id===id);if(item)item.done=!item.done;
+  renderAll();saveLive(true);
+}
+window.removeItem=function(id){
+  if(!confirm("Delete this item?"))return;
+  state.items=state.items.filter(x=>x.id!==id);
+  renderAll();saveLive(true);
+}
+window.saveNotesLive=function(){
+  const box=document.getElementById("notesBox");
+  if(box){state.notes=box.value;saveLive(false);}
+}
+window.copyFrom=function(id){
+  navigator.clipboard.writeText(document.getElementById(id).innerText);
+  alert("Copied. You can paste it into WhatsApp.");
+}
+window.go=function(tab){
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===tab));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.tab)));
 </script>
 </body>
