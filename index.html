@@ -495,14 +495,44 @@ function renderOverview(){
   `;
 }
 
+
 function renderShopping(){
-  const arr = state.items.filter(x=>x.shopping&&!x.done);
-  const grouped = group(arr,"category");
-  let html = `<div class="section"><div class="section-head"><div><h2>Shopping Mode</h2><span>${arr.length} pending shopping items</span></div></div></div>`;
-  if(!arr.length) html += `<div class="section"><div class="empty">No shopping items remaining.</div></div>`;
+  const pending = state.items.filter(x=>x.shopping&&!x.done);
+  const completed = state.items.filter(x=>x.shopping&&x.done);
+  const grouped = group(pending,"category");
+
+  let html = `<div class="section">
+    <div class="section-head">
+      <div>
+        <h2>Shopping Mode</h2>
+        <span>${pending.length} pending · ${completed.length} completed</span>
+      </div>
+    </div>
+  </div>`;
+
+  if(!pending.length){
+    html += `<div class="section"><div class="empty">No pending shopping items.</div></div>`;
+  }
+
   Object.keys(grouped).forEach(cat=>{
-    html += `<div class="section"><div class="section-head"><div><h2>${esc(cat)}</h2><span>${grouped[cat].length} items</span></div></div>${grouped[cat].map(itemRow).join("")}</div>`;
+    html += `<div class="section">
+      <div class="section-head">
+        <div><h2>${esc(cat)}</h2><span>${grouped[cat].length} pending</span></div>
+      </div>
+      ${grouped[cat].map(itemRow).join("")}
+    </div>`;
   });
+
+  html += `<div class="section">
+    <div class="section-head">
+      <div>
+        <h2>Completed Shopping Items</h2>
+        <span>Untick here if something was checked by mistake</span>
+      </div>
+    </div>
+    ${completed.length ? completed.map(itemRow).join("") : `<div class="empty">No shopping items completed yet.</div>`}
+  </div>`;
+
   document.getElementById("shopping").innerHTML = html;
 }
 
